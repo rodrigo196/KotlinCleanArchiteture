@@ -1,11 +1,15 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
 android {
     defaultPublishConfig "debug"
 
     def globalConfiguration = rootProject.extensions.getByName("ext")
 
-    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    compileSdkVersion 27
     buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
     defaultConfig {
@@ -40,11 +44,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     def dataDependencies = rootProject.ext.dataDependencies
     def testDependencies = rootProject.ext.dataTestDependencies
-
     implementation project(':domain')
     compileOnly dataDependencies.javaxAnnotation
     implementation dataDependencies.javaxInject
@@ -53,7 +55,6 @@ dependencies {
     implementation dataDependencies.rxJava
     implementation dataDependencies.rxAndroid
     implementation dataDependencies.androidAnnotations
-
     testImplementation testDependencies.junit
     testImplementation testDependencies.assertj
     testImplementation testDependencies.mockito
